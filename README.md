@@ -7,4 +7,4 @@ Thứ mà mình học được từ trò chơi này:
 + lấy được 1 items bất kỳ từ array
 + sử dụng các function để thực hiện từng nhiệm vụ của trò chơi
 + sử dụng if else để kiểm tra các trường hợp nhập vào
-+ sử dụng while loop để lặp lại trò chơi và tìm người chiến thắng sau một khoảng lặp
++ sử dụng JS DOM để thay đổi nội dung của trang web

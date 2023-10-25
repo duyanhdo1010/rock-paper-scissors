@@ -17,9 +17,6 @@ function getComputerChoice() {
 // function để chơi game và trả về kết quả của một round
 
 function playRound(playerSelection, computerSelection) {
-    // chuyển giá trị của tham số truyền vào thành chữ thường
-    playerSelection = playerSelection.toLowerCase();
-
 
     // so sánh giá trị của hai tham số truyền vào và trả về đoạn text kết quả
 
@@ -40,57 +37,88 @@ function playRound(playerSelection, computerSelection) {
     }
 
   }
+
   
 // check giá trị trả về của function playRound()
 //   const playerSelection = "rock";
 //   const computerSelection = getComputerChoice();
 //   console.log(playRound(playerSelection, computerSelection));
 
-function game(){
+// tạo giao diện cho game với DOM
 
-    // biến đếm số lần thắng của player và computer
-    let playerWinCounter = 0;
-    let computerWinCounter = 0;
-
-    // chạy vòng lặp 5 lần để chơi game và in kết quả người thắng cuộc
-    let i = 0;
-    while (i < 5) {
-
-        // lấy giá trị của người dùng và máy tính
-        const computerSelection = getComputerChoice();
-        const playerSelection = prompt('Please enter your choice: rock, paper or scissors');
+const playerChoice = document.querySelector('.player-choice');
+const playerPoint = document.querySelector('.player-point');
+const computerPoint = document.querySelector('.computer-point');
+const roundResult = document.querySelector('.round-result');
+const matchResult = document.querySelector('.match-result');
 
 
-        // kiểm tra đầu vào của người dùng
-        if (arr.includes(playerSelection.toLowerCase()) == false) {
-            alert('Please enter a valid choice!');
-            continue;
-        } else {
-            // xác định người chiến thăng mỗi round và tăng biến đếm lên 1
-            if (playRound(playerSelection, computerSelection) ==  `You Win! ${playerSelection} beats ${computerSelection}`){
-                alert("You win this round! Computer chose " + computerSelection);
-                playerWinCounter++;
-                i++;
-            } else if (playRound(playerSelection, computerSelection) == `You Lose! ${computerSelection} beats ${playerSelection}`) {
-                alert("You lose this round! Computer chose " + computerSelection);
-                computerWinCounter++;
-                i++;
-            } else {
-                alert("Draw! Computer chose " + computerSelection);
-                i++;
-            }
+// tạo 3 nút cho cho 3 lựa chọn của player 
+const btn_rock = document.createElement('button');
+btn_rock.classList.add('btn', 'btn-rock');
+btn_rock.value = 'rock';
+btn_rock.textContent = 'rock';
+
+const btn_paper = document.createElement('button');
+btn_paper.classList.add('btn', 'btn-paper');
+btn_paper.value = 'paper';
+btn_paper.textContent = 'paper';
+
+
+const btn_scissors = document.createElement('button');
+btn_scissors.classList.add('btn', 'btn_scissors');
+btn_scissors.value = 'scissors';
+btn_scissors.textContent = 'scissors';
+
+// thêm 3 nút vào div playerChoice
+playerChoice.append(btn_rock, btn_paper, btn_scissors);
+
+
+let playerScore = 0;
+let computerScore = 0;
+
+
+const button = document.querySelectorAll('.btn');
+button.forEach((btn) => {
+    btn.style.cssText = "padding: 10px; margin: 10px";    
+    btn.addEventListener('click', () => {
+        playerSelection = btn.value;
+        if (playerScore < 5 && computerScore < 5) {
+            playerPoint.textContent = "Your score: " + playerScore;
+            computerPoint.textContent = "Computer Score: "+ computerScore;
+            playGame(playerSelection);
+        } else if (playerScore == 5 || computerScore == 5){
+            playerScore = 0;
+            computerScore = 0;
+            playerPoint.textContent = "Your score: " + playerScore;
+            computerPoint.textContent = "Computer Score: "+ computerScore;
+            playGame(playerSelection);
         }
-    }
-    
-    // in kết quả người thắng cuộc
-    if (playerWinCounter > computerWinCounter) {
-        alert(`You win the game! with the score ${playerWinCounter} - ${computerWinCounter}`);
-    } else if (playerWinCounter < computerWinCounter){
-        alert(`You lose the game! ${playerWinCounter} - ${computerWinCounter}`);
+    });
+});
+
+function playGame(playerSelection, computerSelection){
+    playerSelection = playerSelection.toLowerCase();
+    computerSelection = getComputerChoice();
+
+    if (playRound(playerSelection, computerSelection) ==  `You Win! ${playerSelection} beats ${computerSelection}`){
+        roundResult.textContent = `You Win! ${playerSelection} beats ${computerSelection}`;
+        playerScore++;
+        playerPoint.textContent = "Your score: " + playerScore;
+    } else if (playRound(playerSelection, computerSelection) == `You Lose! ${computerSelection} beats ${playerSelection}`) {
+        roundResult.textContent = `You Lose! ${computerSelection} beats ${playerSelection}`;
+        computerScore++;
+        computerPoint.textContent = "Computer Score: "+ computerScore;
     } else {
-        alert(`Draw!`);
+        roundResult.textContent = 'Draw!, Computer choose ' + computerSelection;
+    }
+
+    if (playerScore == 5) {
+        matchResult.textContent = 'You Win!';
+    } else if (computerScore == 5) {
+        matchResult.textContent = 'You Lose!';
+    } else {
+        matchResult.textContent = '';
     }
 
 }
-
-game();
